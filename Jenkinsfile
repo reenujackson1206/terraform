@@ -14,13 +14,13 @@ pipeline {
         }
         stage('terraform Init') {
             steps{
-                sh 'pwd'
+                sh 'cd terraform-aws'
                 sh 'terraform init'
             }
         }
         stage('terraform apply') {
             steps{
-                sh 'pwd'
+                sh 'cd terraform-aws'
                 sh 'terraform apply --auto-approve'
             }
         } 
