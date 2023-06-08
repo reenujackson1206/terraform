@@ -8,6 +8,26 @@ pipeline {
                 sh 'sudo apt update && sudo apt install terraform'
             }
         }
+        stage('Clone') {
+            steps {
+                git credentialsId: 'github-userpass', url: 'https://github.com/reenujackson1206/terraform.git'
+            }
+        }
+        stage('terraform format check') {
+            steps{
+                sh 'terraform fmt'
+            }
+        }
+        stage('terraform Init') {
+            steps{
+                sh 'terraform init'
+            }
+        }
+        stage('terraform apply') {
+            steps{
+                sh 'terraform apply --auto-approve'
+            }
+        } 
     }
 }
 
