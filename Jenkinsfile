@@ -15,6 +15,7 @@ pipeline {
         }
         stage('terraform format check') {
             steps{
+                sh 'cd terraform-aws'
                 sh 'terraform fmt'
             }
         }
