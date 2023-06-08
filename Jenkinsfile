@@ -14,11 +14,13 @@ pipeline {
         }
         stage('terraform Init') {
             steps{
+                sh 'pwd'
                 sh 'terraform init'
             }
         }
         stage('terraform apply') {
             steps{
+                sh 'pwd'
                 sh 'terraform apply --auto-approve'
             }
         } 
