@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Clone') {
             steps {
-                git branch: 'feature/aws', credentialsId: 'github-userpass', url: 'https://github.com/reenujackson1206/terraform.git'
+                git credentialsId: 'github-userpass', url: 'https://github.com/reenujackson1206/terraform.git'
             }
         }
         stage('terraform format check') {
