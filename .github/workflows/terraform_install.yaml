@@ -9,6 +9,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Install Unzip (Ubuntu/Debian)
+        run: sudo apt-get update && sudo apt-get install -y unzip
+
+      - name: Install Node.js (Required for Terraform GitHub Action)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18  # Use latest stable version
+
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v3
         with:
