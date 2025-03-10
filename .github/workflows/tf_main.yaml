@@ -33,7 +33,9 @@ jobs:
       - name: Terraform Init
       # Set the working directory for this step
         working-directory: ${{github.event.inputs.module}}
-        run: terraform init
+        run: |
+          pwd
+          terraform init
 
   terraform-format:
     needs: [load-module, terraform-init]
@@ -42,7 +44,9 @@ jobs:
       - name: Terraform Format
       # Set the working directory for this step
         working-directory: ${{github.event.inputs.module}}
-        run: terraform fmt -recursive
+        run: |
+          pwd
+          terraform fmt -recursive
 
   # Generates an execution plan for Terraform
   terraform-plan:
@@ -55,6 +59,7 @@ jobs:
       - name: Terraform Plan
         working-directory: ${{github.event.inputs.module}}
         run: |
+              pwd
               echo "current_date=$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
               # Create a plan file with a descriptive name
               #echo "plan_file=${{ github.event.inputs.module }}-${{ github.event.inputs.environment-name}}-${{ env.current_date }}-tfplan" >> $GITHUB_ENV
