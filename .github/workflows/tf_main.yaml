@@ -1,0 +1,73 @@
+name: Install Terraform
+on:
+  workflow_dispatch:
+  
+    inputs:
+      module:
+        type: choice
+        description: 'Which module to run'
+        required: true
+        options: ['ec2']
+
+run-name: Deploy ${{github.event.inputs.module}}
+
+jobs:
+  load-module:
+    runs-on: [self-hosted, runner-1]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Checkout terraform module repository
+        uses: actions/checkout@v3
+        with:
+          repository: reenujackson1206/terraform-modules
+          ref: main
+          path: ${{github.event.inputs.module}}
+          token: ${{ secrets.GH_TOKEN }} 
+
+  terraform-init:
+    needs: [load-module]
+    runs-on: [self-hosted, runner-1]
+    steps:
+      - name: Terraform Init
+      # Set the working directory for this step
+        working-directory: ${{github.event.inputs.module}}
+        run: terraform init
+
+  terraform-format:
+    needs: [load-module, terraform-init]
+    runs-on: [self-hosted, runner-1]
+    steps:
+      - name: Terraform Format
+      # Set the working directory for this step
+        working-directory: ${{github.event.inputs.module}}
+        run: terraform fmt -recursive
+
+  # Generates an execution plan for Terraform
+  terraform-plan:
+    needs: [load-module, terraform-init, terraform-format]
+    runs-on: [self-hosted, runner-1]
+    outputs:
+      # Define job outputs
+      output1: ${{ steps.file.outputs.plan_file }}
+    steps:
+      - name: Terraform Plan
+        working-directory: ${{github.event.inputs.module}}
+        run: |
+              echo "current_date=$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
+              # Create a plan file with a descriptive name
+              #echo "plan_file=${{ github.event.inputs.module }}-${{ github.event.inputs.environment-name}}-${{ env.current_date }}-tfplan" >> $GITHUB_ENV
+              # Generate a Terraform plan
+              terraform plan -out=tfplan -input=false -lock=false -no-color
+              # Create a text representation of the plan
+              terraform show -no-color tfplan > tfplan.txt
+              
+      - name: Get Workflow Run ID
+        id: get_workflow_id
+        run: echo "Workflow Run ID is ${{ github.run_id }}"
+          
+      - name: Generate timestamp
+        run: echo "TIMESTAMP=$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
+
+      
