@@ -32,7 +32,7 @@ jobs:
     steps:
       - name: Terraform Init
       # Set the working directory for this step
-        working-directory: ${{github.event.inputs.module}}
+        working-directory: ./${{github.event.inputs.module}}
         run: |
           pwd
           terraform init
@@ -43,7 +43,7 @@ jobs:
     steps:
       - name: Terraform Format
       # Set the working directory for this step
-        working-directory: ${{github.event.inputs.module}}
+        working-directory: ./${{github.event.inputs.module}}
         run: |
           pwd
           terraform fmt -recursive
@@ -57,7 +57,7 @@ jobs:
       output1: ${{ steps.file.outputs.plan_file }}
     steps:
       - name: Terraform Plan
-        working-directory: ${{github.event.inputs.module}}
+        working-directory: ./${{github.event.inputs.module}}
         run: |
               pwd
               ls -al
