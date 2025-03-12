@@ -35,6 +35,7 @@ jobs:
         working-directory: ./${{github.event.inputs.module}}
         run: |
           pwd
+          ls -al
           terraform init
 
   terraform-format:
