@@ -23,7 +23,7 @@ jobs:
         with:
           repository: reenujackson1206/terraform-modules
           ref: main
-          path: ${{github.event.inputs.module}}
+          path: ${{github.event.inputs.module}}/${{github.event.inputs.module}}
           token: ${{ secrets.GH_TOKEN }} 
 
   terraform-init:
