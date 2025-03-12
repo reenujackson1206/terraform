@@ -23,7 +23,7 @@ jobs:
         with:
           repository: reenujackson1206/terraform-modules
           ref: main
-          path: ${{github.event.inputs.module}}/${{github.event.inputs.module}}
+          path: ${{github.event.inputs.module}}
           token: ${{ secrets.GH_TOKEN }} 
 
   terraform-init:
@@ -32,7 +32,7 @@ jobs:
     steps:
       - name: Terraform Init
       # Set the working directory for this step
-        working-directory: ./${{github.event.inputs.module}}
+        working-directory: ./${{github.event.inputs.module}}//${{github.event.inputs.module}}
         run: |
           pwd
           ls -al
@@ -44,7 +44,7 @@ jobs:
     steps:
       - name: Terraform Format
       # Set the working directory for this step
-        working-directory: ./${{github.event.inputs.module}}
+        working-directory: ./${{github.event.inputs.module}}/${{github.event.inputs.module}}
         run: |
           pwd
           terraform fmt -recursive
@@ -58,7 +58,7 @@ jobs:
       output1: ${{ steps.file.outputs.plan_file }}
     steps:
       - name: Terraform Plan
-        working-directory: ./${{github.event.inputs.module}}
+        working-directory: ./${{github.event.inputs.module}}/${{github.event.inputs.module}}
         run: |
               pwd
               ls -al
