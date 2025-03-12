@@ -30,6 +30,13 @@ jobs:
     needs: [load-module]
     runs-on: [self-hosted, runner-1]
     steps:
+      - name: Run Custom Setup Action
+        uses: ./.github/actions/setup
+        with:
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_ACNT_NUM: ${{ secrets.AWS_ACNT_NUM }}
+          IAM_ROLE: ${{ secrets.IAM_ROLE }}
+
       - name: Terraform Init
       # Set the working directory for this step
         working-directory: ./${{github.event.inputs.module}}//${{github.event.inputs.module}}
@@ -42,6 +49,13 @@ jobs:
     needs: [load-module, terraform-init]
     runs-on: [self-hosted, runner-1]
     steps:
+      - name: Run Custom Setup Action
+        uses: ./.github/actions/setup
+        with:
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_ACNT_NUM: ${{ secrets.AWS_ACNT_NUM }}
+          IAM_ROLE: ${{ secrets.IAM_ROLE }}
+
       - name: Terraform Format
       # Set the working directory for this step
         working-directory: ./${{github.event.inputs.module}}/${{github.event.inputs.module}}
@@ -57,6 +71,13 @@ jobs:
       # Define job outputs
       output1: ${{ steps.file.outputs.plan_file }}
     steps:
+      - name: Run Custom Setup Action
+        uses: ./.github/actions/setup
+        with:
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_ACNT_NUM: ${{ secrets.AWS_ACNT_NUM }}
+          IAM_ROLE: ${{ secrets.IAM_ROLE }}
+          
       - name: Terraform Plan
         working-directory: ./${{github.event.inputs.module}}/${{github.event.inputs.module}}
         run: |
