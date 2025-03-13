@@ -18,6 +18,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Run Custom Setup Action
+        uses: ./.github/actions/setup
+        with:
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_ACNT_NUM: ${{ secrets.AWS_ACNT_NUM }}
+          IAM_ROLE: ${{ secrets.IAM_ROLE }}
+
       - name: Checkout terraform module repository
         uses: actions/checkout@v3
         with:
