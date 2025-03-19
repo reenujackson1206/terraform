@@ -1,0 +1,26 @@
+name: "Setup Environment"
+description: "A set of common steps"
+inputs:
+  AWS_REGION:
+    description: "AWS Region"
+    required: true
+
+  AWS_ACNT_NUM:
+    description: "AWS Account Number"
+    required: true
+
+  IAM_ROLE:
+    description: "AWS Role"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Generate STS Token
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-region: ${{ inputs.AWS_REGION }}
+        role-to-assume: arn:aws:iam::${{ inputs.AWS_ACNT_NUM }}:role/${{ inputs.IAM_ROLE }}
+        role-session-name: ${{ github.event.inputs.module }}_session
+        role-duration-seconds: 2400
+        role-skip-session-tagging: true
