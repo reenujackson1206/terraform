@@ -39,6 +39,9 @@ jobs:
   terraform-init:
     needs: [load-module]
     runs-on: [self-hosted, runner-1]
+    permissions:
+      id-token: write   # Required for OIDC authentication
+      contents: read    # Needed to access repo contents
     steps:
       - name: Run Custom Setup Action
         uses: ./.github/actions/setup
@@ -58,6 +61,9 @@ jobs:
   terraform-format:
     needs: [load-module, terraform-init]
     runs-on: [self-hosted, runner-1]
+    permissions:
+      id-token: write   # Required for OIDC authentication
+      contents: read    # Needed to access repo contents
     steps:
       - name: Run Custom Setup Action
         uses: ./.github/actions/setup
@@ -77,6 +83,9 @@ jobs:
   terraform-plan:
     needs: [load-module, terraform-init, terraform-format]
     runs-on: [self-hosted, runner-1]
+    permissions:
+      id-token: write   # Required for OIDC authentication
+      contents: read    # Needed to access repo contents
     outputs:
       # Define job outputs
       output1: ${{ steps.file.outputs.plan_file }}
